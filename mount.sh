@@ -13,7 +13,8 @@ for dir in "$SCRIPT_DIR"/*/; do
   name="$(basename "$dir")"
   dest="$TARGET_DIR/$name"
   echo "Linking $name -> $dest"
-  ln -sf "$dir" "$dest"
+  rm -rf "$dest"
+  ln -s "$dir" "$dest"
 done
 
 echo "Done. Skills mounted to $TARGET_DIR"
