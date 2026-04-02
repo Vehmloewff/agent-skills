@@ -24,7 +24,7 @@ Use this skill when the task involves any of the following:
 ## Prerequisites
 
 - `mcpc` is installed
-- a Dart MCP server entry exists in `mcp.json`, for example `dart-mcp-server`
+- the skill already ships an `mcp.json` file next to this `SKILL.md` file, so when you run the commands below, point `mcpc` at that file (for example from the skill directory use `mcp.json`, otherwise use the absolute path)
 - Flutter SDK is installed
 - if you need `flutter_driver`, the app must be launched with a special driver-enabled entrypoint
 
@@ -38,10 +38,18 @@ Use this skill when the task involves any of the following:
 
 ## 1. Connect the MCP server
 
-Start by connecting the MCP server:
+Start by connecting the MCP server.
+
+Important: the `mcp.json` referenced here is the one that lives next to this skill file. If your current shell is not already in the skill directory, use the absolute path to that file instead of a bare `mcp.json`.
 
 ```bash
 mcpc connect mcp.json:dart-mcp-server @flutter
+```
+
+Example with an absolute path:
+
+```bash
+mcpc connect ~/.agents/skills/flutter/mcp.json:dart-mcp-server @flutter
 ```
 
 Useful discovery commands:
@@ -394,7 +402,7 @@ mcpc @flutter tools-call hot_restart '{}'
 ### Session setup
 
 ```bash
-mcpc connect mcp.json:dart-mcp-server @flutter
+mcpc connect ~/.agents/skills/flutter/mcp.json:dart-mcp-server @flutter
 mcpc @flutter tools-call launch_app '{"root":"/absolute/path/to/project","device":"chrome","target":"test_driver/flutter_driver_main.dart"}'
 mcpc @flutter tools-call connect_dart_tooling_daemon '{"uri":"<DTD URI returned by launch_app>"}'
 ```
