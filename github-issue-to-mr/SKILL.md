@@ -33,6 +33,7 @@ Choose the best long-term solution for the issue.
 9. Create a focused branch that starts with the issue number and uses a dashed summary of the issue title, such as `<number>-short-issue-summary`.
 10. Commit incrementally as meaningful pieces of work are completed.
 11. Open the merge request with a clear title and a reviewer-friendly description.
+12. In the merge request description, explicitly reference the issue number with closing language such as `Closes #<number>` so the issue is closed when the merge request merges.
 
 ## How to work
 
@@ -77,7 +78,7 @@ Do not stop at code that merely compiles. The work is complete only when:
 - the branch name starts with the issue number and uses a dashed summary of the issue title
 - the work has been committed incrementally in focused commits
 - the branch is pushed if required
-- the merge request is open and describes the change clearly
+- the merge request is open, describes the change clearly, and includes an issue-closing reference such as `Closes #<number>`
 
 ## Merge request content
 Make the merge request easy to review.
@@ -85,6 +86,7 @@ Make the merge request easy to review.
 Include:
 - what changed
 - why the chosen solution is the right one
+- an explicit issue-closing reference such as `Closes #<number>`
 - any refactors or breaking changes
 - tests or checks that were run
 - follow-up notes only if they are genuinely needed
