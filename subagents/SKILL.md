@@ -1,11 +1,11 @@
 ---
 name: subagents
-description: Spawn a fresh pi subagent in non-interactive print mode for any self-contained subtask that can be delegated with a prompt. Use this much more often than you think; research, investigation, implementation on isolated files, drafting, summarization, validation, option generation, and other bounded tasks are usually good candidates.
+description: Spawn a pi subagent in non-interactive print mode for any self-contained subtask that can be delegated with a prompt. Use this much more often than you think; research, investigation, implementation on isolated files, drafting, summarization, validation, option generation, and other bounded tasks are usually good candidates.
 ---
 
 # Subagents
 
-Use this skill to delegate work to a fresh pi agent running in non-interactive mode.
+Use this skill to delegate work to a pi agent running in non-interactive mode.
 
 The mechanism is intentionally simple. The value of this skill is not the shell command itself; it is recognizing that **delegation should be a default move** for many tasks.
 
@@ -19,7 +19,7 @@ Good default: when you notice a subtask that could reasonably be handed to "anot
 
 ## What a subagent is good for
 
-A subagent is ideal when you want a fresh context to handle one bounded piece of work, then return a result.
+A subagent is ideal when you want one bounded piece of work handled separately, then return a result.
 
 Common high-value uses:
 - investigating a bug and summarizing the root cause
@@ -64,29 +64,31 @@ Even then, revisit the decision. Many tasks that feel tightly coupled can still 
 
 ## How to invoke a subagent
 
-Run the helper script from this skill directory by passing the prompt on stdin:
+Run `pi` directly in print mode.
+
+Example:
 
 ```bash
-cat <<'EOF' | ./spawn-subagent.sh
-Inspect src/auth.ts and src/session.ts, explain the login flow, and note any risky assumptions. Do not change files.
-EOF
+pi --print "Execute the delegated task below. Follow it exactly.
+
+Inspect src/auth.ts and src/session.ts, explain the login flow, and note any risky assumptions. Do not change files."
 ```
 
 Another example:
 
 ```bash
-cat <<'EOF' | ./spawn-subagent.sh
-Read the local code related to billing retries. Summarize how retries are scheduled, where backoff is defined, and any obvious bugs or edge cases. Do not modify files.
-EOF
+pi --print "Execute the delegated task below. Follow it exactly.
+
+Read the local code related to billing retries. Summarize how retries are scheduled, where backoff is defined, and any obvious bugs or edge cases. Do not modify files."
 ```
 
-The helper runs `pi` in print mode with no session carryover, so the subagent gets a fresh, focused context.
+This runs a `pi` subagent in focused print mode.
 
-The script reads stdin into a shell variable, prefixes it with the delegation instruction, and passes the combined result as a **single argv value** to `pi`. That means quotes inside the delegated prompt are handled safely and are not re-parsed by the shell.
+If the delegated prompt is long or contains tricky quoting, write it to stdin first and then interpolate it safely in your shell workflow before invoking `pi`.
 
 ## Important: use a very long command timeout
 
-The script itself does **not** enforce a timeout.
+The `pi` command itself does **not** enforce a timeout.
 
 When invoking it through the agent's command-execution tool, you should give that command a **very long timeout**. Subagents are often used for tasks that look simple but expand into deeper investigation or implementation.
 
@@ -137,9 +139,9 @@ Output: Give the root cause, the specific file(s) involved, and the smallest lik
 ### 1. Investigation only
 
 ```bash
-cat <<'EOF' | ./spawn-subagent.sh
-Read the test failure output in /tmp/test.log and the files under src/cache. Explain the likely root cause and propose a minimal fix. Do not edit files.
-EOF
+pi --print "Execute the delegated task below. Follow it exactly.
+
+Read the test failure output in /tmp/test.log and the files under src/cache. Explain the likely root cause and propose a minimal fix. Do not edit files."
 ```
 
 Use this when you need understanding before acting.
@@ -147,9 +149,9 @@ Use this when you need understanding before acting.
 ### 2. Isolated implementation
 
 ```bash
-cat <<'EOF' | ./spawn-subagent.sh
-Add a small helper in src/lib/formatDuration.ts that formats milliseconds as mm:ss, update only the directly related tests, and summarize the changes.
-EOF
+pi --print "Execute the delegated task below. Follow it exactly.
+
+Add a small helper in src/lib/formatDuration.ts that formats milliseconds as mm:ss, update only the directly related tests, and summarize the changes."
 ```
 
 Use this when the change is local and unlikely to conflict with other work.
@@ -157,9 +159,9 @@ Use this when the change is local and unlikely to conflict with other work.
 ### 3. Planning before coding
 
 ```bash
-cat <<'EOF' | ./spawn-subagent.sh
-Inspect the existing notification system and produce a concise implementation plan for adding browser push notifications. Do not edit files.
-EOF
+pi --print "Execute the delegated task below. Follow it exactly.
+
+Inspect the existing notification system and produce a concise implementation plan for adding browser push notifications. Do not edit files."
 ```
 
 Use this when a short planning pass will reduce mistakes.
@@ -167,9 +169,9 @@ Use this when a short planning pass will reduce mistakes.
 ### 4. Option generation
 
 ```bash
-cat <<'EOF' | ./spawn-subagent.sh
-Compare two ways to implement CSV export in this codebase: client-side generation vs server-side streaming. Use the local codebase as context and recommend one approach with tradeoffs. Do not edit files.
-EOF
+pi --print "Execute the delegated task below. Follow it exactly.
+
+Compare two ways to implement CSV export in this codebase: client-side generation vs server-side streaming. Use the local codebase as context and recommend one approach with tradeoffs. Do not edit files."
 ```
 
 Use this when you want a fresh recommendation instead of carrying all analysis yourself.
@@ -177,9 +179,9 @@ Use this when you want a fresh recommendation instead of carrying all analysis y
 ### 5. Focused documentation pass
 
 ```bash
-cat <<'EOF' | ./spawn-subagent.sh
-Read package.json and the files under scripts/. Summarize the developer workflows available in this repo, including test, lint, build, and release commands. Do not edit files.
-EOF
+pi --print "Execute the delegated task below. Follow it exactly.
+
+Read package.json and the files under scripts/. Summarize the developer workflows available in this repo, including test, lint, build, and release commands. Do not edit files."
 ```
 
 Use this when you need a quick map of part of the project.
@@ -217,7 +219,7 @@ Do this only when their work products will not conflict.
 - Avoid simultaneous subagents editing the same files.
 - Ask for concise, structured output so you can quickly integrate the result.
 - Treat subagents as force multipliers, not rare special-case tools.
-- When running `./spawn-subagent.sh` through a command tool, remember to set a very long command timeout.
+- When running `pi --print ...` through a command tool, remember to set a very long command timeout.
 
 ## Final guidance
 
