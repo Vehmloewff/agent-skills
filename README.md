@@ -3,6 +3,7 @@
 A series of skills that I want my agents to have. You can use this too!
 
 Current skills:
+- `codebase-design` — shared vocabulary and principles for designing deep modules, clean seams, and testable interfaces
 - `ask-user` — native macOS multiline prompt dialog backed by PyObjC
 - `flutter` — Flutter MCP and `flutter_driver` guidance for launching, inspecting, and driving apps
 - `github-issue-to-mr` — inspect a GitHub issue with `gh`, implement the full fix, run checks, commit, push, and open a review-ready PR/MR
